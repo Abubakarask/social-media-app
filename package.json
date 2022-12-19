@@ -1,0 +1,17 @@
+{
+  "name": "social-media-app",
+  "version": "1.0.0",
+  "description": "This is Social Media App project.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon backend/server.js"
+  },
+  "author": "ASK, Tejas_p07",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.8.0"
+  }
+}
