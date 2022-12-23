@@ -243,10 +243,9 @@ exports.deleteMyProfile = async (req,res) => {
 
         const user = await User.findById(req.user._id);
         const posts = user.posts;
-        const followers = user.followers
-        const userId = user._id
-
-        console.log(userId)
+        const followers = user.followers;
+        const followings = user.following;
+        const userId = user._id;
 
         await user.remove();
 
@@ -272,6 +271,16 @@ exports.deleteMyProfile = async (req,res) => {
             await follower.save();
         })
 
+        //Removing Users from following's follower
+        followings.forEach(async followingId => {
+            const following = await User.findById(followingId);
+
+            const index = following.followers.indexOf(userId);
+            following.followers.splice(index, 1);
+
+            await following.save();
+        })
+
 
         res.status(200).json({
             success: true,
@@ -294,6 +303,49 @@ exports.myProfile = async (req, res) => {
             success: true,
             user
         });
+        
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
+exports.getUserProfile = async (req, res) => {
+    try {
+        const userProfile = await User.findById(req.params.id).populate("posts")
+
+        if (!userProfile){
+            return res.status(404).json({
+                success: false,
+                message: "User Not Found"
+            })
+        }
+
+        res.status(200).json({
+            success: true,
+            userProfile
+        })
+
+
+        
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });  
+    }
+}
+
+exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find({})
+        
+        res.status(200).json({
+            success: true,
+            users
+        })
         
     } catch (error) {
         res.status(500).json({
