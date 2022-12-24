@@ -260,7 +260,6 @@ exports.deleteComment = async (req, res) => {
                 success: true,
                 message: "Selected Comment has been Deleted"
             })
-
             
         } else {
             post.comments.forEach(function (item, index) {
